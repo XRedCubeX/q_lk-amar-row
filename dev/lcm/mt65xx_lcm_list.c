@@ -404,9 +404,17 @@ extern LCM_DRIVER nt36672c_fhdp_dsi_vdo_auo_cphy_90hz_jdi_lcm_drv;
 extern LCM_DRIVER nt36672c_fhdp_dsi_vdo_auo_cphy_90hz_tianma_lcm_drv;
 extern LCM_DRIVER nt36672c_fhdp_dsi_vdo_auo_cphy_90hz_jdi_hfp_lcm_drv;
 extern LCM_DRIVER nt36672c_fhdp_dsi_vdo_auo_cphy_90hz_tianma_hfp_lcm_drv;
+extern LCM_DRIVER panel_mipi_hx83102e_boe_video_800p_lcm_drv;
+extern LCM_DRIVER panel_mipi_hx83102e_inx_video_800p_lcm_drv;
 
 LCM_DRIVER *lcm_driver_list[] = {
 
+#if defined(PANEL_MIPI_HX83102E_BOE_VIDEO_800P)
+&panel_mipi_hx83102e_boe_video_800p_lcm_drv,
+#endif
+#if defined(PANEL_MIPI_HX83102E_INX_VIDEO_800P)
+&panel_mipi_hx83102e_inx_video_800p_lcm_drv,
+#endif
 #if defined(NT36672AH_HDP_DSI_VDO_TCL_CSOT)
 	&nt36672ah_hdp_dsi_vdo_tcl_csot_lcm_drv,
 #endif
@@ -1792,6 +1800,12 @@ LCM_DRIVER *lcm_driver_list[] = {
 
 #if defined(MTK_LCM_DEVICE_TREE_SUPPORT)
 unsigned char lcm_name_list[][128] = {
+#if defined(PANEL_MIPI_HX83102E_BOE_VIDEO_800P)
+	"panel_mipi_hx83102e_boe_video_800p",
+#endif
+#if defined(PANEL_MIPI_HX83102E_INX_VIDEO_800P)
+	"panel_mipi_hx83102e_inx_video_800p"",
+#endif
 #if defined(HX8392A_DSI_CMD)
 	"hx8392a_dsi_cmd",
 #endif
