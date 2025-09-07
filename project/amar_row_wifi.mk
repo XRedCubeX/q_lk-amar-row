@@ -1,6 +1,6 @@
 #
 LOCAL_DIR := $(GET_LOCAL_DIR)
-TARGET := k65v1_64_bsp
+TARGET := amar_row_wifi
 MODULES += app/mt_boot \
            dev/lcm
 MTK_EMMC_SUPPORT = yes
