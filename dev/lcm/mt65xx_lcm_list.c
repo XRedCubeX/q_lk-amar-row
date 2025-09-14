@@ -1804,7 +1804,7 @@ unsigned char lcm_name_list[][128] = {
 	"panel_mipi_hx83102e_boe_video_800p",
 #endif
 #if defined(PANEL_MIPI_HX83102E_INX_VIDEO_800P)
-	"panel_mipi_hx83102e_inx_video_800p"",
+	"panel_mipi_hx83102e_inx_video_800p",
 #endif
 #if defined(HX8392A_DSI_CMD)
 	"hx8392a_dsi_cmd",

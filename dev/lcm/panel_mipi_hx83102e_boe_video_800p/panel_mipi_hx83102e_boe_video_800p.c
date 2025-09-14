@@ -19,7 +19,6 @@
 #endif
 
 #include "lcm_drv.h"
-#include "tpd.h"
 #ifdef BUILD_LK
 #include <platform/upmu_common.h>
 #include <platform/mt_gpio.h>
@@ -29,7 +28,8 @@
 #elif defined(BUILD_UBOOT)
 #include <asm/arch/mt_gpio.h>
 #else
-#include "disp_dts_gpio.h"
+#include <mach/mt_pm_ldo.h>
+#include <mach/mt_gpio.h>
 #endif
 
 #ifndef MACH_FPGA
@@ -47,9 +47,9 @@
 #define LCM_ID (0x98)
 
 static const unsigned int BL_MIN_LEVEL = 20;
-static struct LCM_UTIL_FUNCS lcm_util;
+static LCM_UTIL_FUNCS lcm_util;
 
-#define SET_RESET_PIN(v)	(lcm_util.set_reset_pin_gpio((v)))
+#define SET_RESET_PIN(v)	(lcm_util.set_reset_pin((v)))
 #define MDELAY(n)		(lcm_util.mdelay(n))
 #define UDELAY(n)		(lcm_util.udelay(n))
 extern void BACKLIGHT_GPIO_enable(void);
@@ -138,11 +138,11 @@ static void suspend_lcm_register(void)
 	data_array[1] = 0x2E1083B9;
 	dsi_set_cmdq(data_array, 2, 1);
 
-	if (!Himax_gesture_status())
-	{
-		data_array[0] = 0x21B11500;
-		dsi_set_cmdq(data_array, 1, 1);
-	}
+	// if (!Himax_gesture_status())
+	// {
+	// 	data_array[0] = 0x21B11500;
+	// 	dsi_set_cmdq(data_array, 1, 1);
+	// }
 }
 
 #if 0
@@ -261,15 +261,15 @@ static void push_table(void *cmdq, struct LCM_setting_table *table,
 }
 
 
-static void lcm_set_util_funcs(const struct LCM_UTIL_FUNCS *util)
+static void lcm_set_util_funcs(const LCM_UTIL_FUNCS *util)
 {
-	memcpy(&lcm_util, util, sizeof( struct LCM_UTIL_FUNCS));
+	memcpy(&lcm_util, util, sizeof( LCM_UTIL_FUNCS));
 }
 
 
-static void lcm_get_params(struct LCM_PARAMS *params)
+static void lcm_get_params(LCM_PARAMS *params)
 {
-	memset(params, 0, sizeof(struct LCM_PARAMS));
+	memset(params, 0, sizeof(LCM_PARAMS));
 
 	params->type = LCM_TYPE_DSI;
 
@@ -365,19 +365,19 @@ static void lcm_init(void)
 
 	LCM_LOGD("lcm_init\n");
 
-	OCP2131_GPIO_ENP_enable();
-	ret = OCP2131_write_bytes(cmd, data);
+	// OCP2131_GPIO_ENP_enable();
+	// ret = OCP2131_write_bytes(cmd, data);
 	if (ret < 0)
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write error----\n", cmd);
 	else
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write success----\n", cmd);
 
 	MDELAY(2);
-	OCP2131_GPIO_ENN_enable();
+	// OCP2131_GPIO_ENN_enable();
 	cmd = 0x01;
 	data = 0x11;
 
-	ret = OCP2131_write_bytes(cmd, data);
+	// ret = OCP2131_write_bytes(cmd, data);
 
 	if (ret < 0)
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write error----\n", cmd);
@@ -388,11 +388,11 @@ static void lcm_init(void)
 	SET_RESET_PIN(1);
 	MDELAY(1);
 	SET_RESET_PIN(0);
-	tpd_gpio_output(0, 1);
+	// tpd_gpio_output(0, 1);
 	MDELAY(1);
-	tpd_gpio_output(0, 0);
+	// tpd_gpio_output(0, 0);
 	MDELAY(5);
-	tpd_gpio_output(0, 1);
+	// tpd_gpio_output(0, 1);
 	SET_RESET_PIN(1);
 	MDELAY(150);
 
@@ -404,22 +404,22 @@ static void lcm_init(void)
 	//SGM37604A_set_backlight_reg_init();
 }
 
-static void lcm_suspend(void)
-{
-	LCM_LOGD("lcm_suspend\n");
-
-	suspend_lcm_register();
-	//push_table(NULL, lcm_suspend_setting, sizeof(lcm_suspend_setting) / sizeof(struct LCM_setting_table), 1);
-	MDELAY(2);
-	//BACKLIGHT_GPIO_disable();
-
-	if (!Himax_gesture_status())
-	{
-		OCP2131_GPIO_ENN_disable();
-		MDELAY(2);
-		OCP2131_GPIO_ENP_disable();
-	}
-}
+// static void lcm_suspend(void)
+// {
+// 	LCM_LOGD("lcm_suspend\n");
+//
+// 	suspend_lcm_register();
+// 	//push_table(NULL, lcm_suspend_setting, sizeof(lcm_suspend_setting) / sizeof(struct LCM_setting_table), 1);
+// 	MDELAY(2);
+// 	//BACKLIGHT_GPIO_disable();
+// /*
+// 	if (!Himax_gesture_status())
+// 	{
+// 		OCP2131_GPIO_ENN_disable();
+// 		MDELAY(2);
+// 		OCP2131_GPIO_ENP_disable();
+// 	}*/
+// }
 
 static void lcm_resume(void)
 {
@@ -450,7 +450,7 @@ static unsigned int lcm_compare_id(void)
 	MDELAY(1);
 
 	SET_RESET_PIN(1);
-	MDELAY(20);
+	MDELAY(120);
 
 	push_table(NULL, switch_table_page1, sizeof(switch_table_page1) / sizeof(struct LCM_setting_table), 1);
 
@@ -558,18 +558,6 @@ static void lcm_setbacklight_cmdq(void *handle, unsigned int level)
 	push_table(NULL, bl_level, sizeof(bl_level) / sizeof(struct LCM_setting_table), 1);
 }
 
-static void lcm_set_recovery_backlight(void)
-{
-	push_table(NULL, bl_level, sizeof(bl_level) / sizeof(struct LCM_setting_table), 1);
-}
-
-static void lcm_set_cabc_mode(int value)
-{
-
-	CABC_mode[0].para_list[0] = value;
-	push_table(NULL, CABC_mode, sizeof(CABC_mode) / sizeof(struct LCM_setting_table), 1);
-}
-
 static void *lcm_switch_mode(int mode)
 {
 	return NULL;
@@ -587,12 +575,11 @@ static void lcm_validate_roi(int *x, int *y, int *width, int *height)
 }
 #endif
 
-struct LCM_DRIVER mipi_hx83102e_boe_video_800p_lcm_drv = {
+LCM_DRIVER panel_mipi_hx83102e_boe_video_800p_lcm_drv = {
 	.name = "mipi_hx83102e_boe_video_800p",
 	.set_util_funcs = lcm_set_util_funcs,
 	.get_params = lcm_get_params,
 	.init = lcm_init,
-	.suspend = lcm_suspend,
 	.resume = lcm_resume,
 	.compare_id = lcm_compare_id,
 	.init_power = lcm_init_power,
@@ -606,6 +593,4 @@ struct LCM_DRIVER mipi_hx83102e_boe_video_800p_lcm_drv = {
 #if (LCM_DSI_CMD_MODE)
 	.validate_roi = lcm_validate_roi,
 #endif
-	.set_recovery_backlight = lcm_set_recovery_backlight,
-	.set_cabc_mode = lcm_set_cabc_mode,
 };
