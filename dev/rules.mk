@@ -4,7 +4,8 @@ MODULES += \
 	$(LOCAL_DIR)/video \
 	$(LOCAL_DIR)/lcm \
 	$(LOCAL_DIR)/gic \
-	$(LOCAL_DIR)/md_com
+	$(LOCAL_DIR)/md_com\
+	$(LOCAL_DIR)/ocp2131
 
 
 OBJS += \

@@ -86,12 +86,12 @@ extern int Himax_gesture_status(void);
 #include <linux/interrupt.h>
 #include <linux/io.h>
 #include <linux/platform_device.h>
-#include <linux/i2c/ocp2131.h>
 
 /*****************************************************************************
  * Define
  *****************************************************************************/
 #endif
+#include <../ocp2131/ocp2131.h>
 
 static const unsigned char LCD_MODULE_ID = 0x01;
 #define LCM_DSI_CMD_MODE								0
@@ -365,19 +365,19 @@ static void lcm_init(void)
 
 	LCM_LOGD("lcm_init\n");
 
-	// OCP2131_GPIO_ENP_enable();
-	// ret = OCP2131_write_bytes(cmd, data);
+	OCP2131_GPIO_ENP_enable();
+	ret = OCP2131_write_bytes(cmd, data);
 	if (ret < 0)
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write error----\n", cmd);
 	else
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write success----\n", cmd);
 
 	MDELAY(2);
-	// OCP2131_GPIO_ENN_enable();
+	OCP2131_GPIO_ENN_enable();
 	cmd = 0x01;
 	data = 0x11;
 
-	// ret = OCP2131_write_bytes(cmd, data);
+	ret = OCP2131_write_bytes(cmd, data);
 
 	if (ret < 0)
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write error----\n", cmd);
