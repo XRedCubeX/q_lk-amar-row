@@ -402,22 +402,22 @@ static void lcm_init(void)
 	//SGM37604A_set_backlight_reg_init();
 }
 
-// static void lcm_suspend(void)
-// {
-// 	LCM_LOGD("lcm_suspend\n");
-//
-// 	suspend_lcm_register();
-// 	//push_table(NULL, lcm_suspend_setting, sizeof(lcm_suspend_setting) / sizeof(struct LCM_setting_table), 1);
-// 	MDELAY(2);
-// 	//BACKLIGHT_GPIO_disable();
-//
-// 	// if (!Himax_gesture_status())
-// 	// {
-// 	// 	OCP2131_GPIO_ENN_disable();
-// 	// 	MDELAY(2);
-// 	// 	OCP2131_GPIO_ENP_disable();
-// 	// }
-// }
+static void lcm_suspend(void)
+ {
+ 	LCM_LOGD("lcm_suspend\n");
+
+ 	suspend_lcm_register();
+ 	push_table(NULL, lcm_suspend_setting, sizeof(lcm_suspend_setting) / sizeof(struct LCM_setting_table), 1);
+ 	MDELAY(2);
+ 	BACKLIGHT_GPIO_disable();
+
+	if (!Himax_gesture_status())
+	{
+ 	OCP2131_GPIO_ENN_disable();
+ 	MDELAY(2);
+ 	OCP2131_GPIO_ENP_disable();
+	}
+ }
 
 static void lcm_resume(void)
 {
