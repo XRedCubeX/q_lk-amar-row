@@ -145,7 +145,6 @@ static void suspend_lcm_register(void)
 	// }
 }
 
-#if 0
 static struct LCM_setting_table lcm_suspend_setting[] = {
 	{ 0x28, 0, {} },
 	{ REGFLAG_DELAY, 30, {} },
@@ -154,7 +153,6 @@ static struct LCM_setting_table lcm_suspend_setting[] = {
 	{ 0xB9, 0x03, {0x83, 0x10, 0x2E} },
 	{ 0xB1, 0x01, {0x21} },
 };
-#endif
 
 #if 1
 static void init_lcm_register(void)

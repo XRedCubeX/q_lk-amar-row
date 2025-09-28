@@ -92,6 +92,7 @@ extern int Himax_gesture_status(void);
  * Define
  *****************************************************************************/
 #endif
+#include <../ocp2131/ocp2131.h>
 
 static const unsigned char LCD_MODULE_ID = 0x01;
 #define LCM_DSI_CMD_MODE								0
@@ -145,7 +146,6 @@ static void suspend_lcm_register(void)
 	// }
 }
 
-#if 0
 static struct LCM_setting_table lcm_suspend_setting[] = {
 	{ 0x28, 0, {} },
 	{ REGFLAG_DELAY, 30, {} },
@@ -154,7 +154,6 @@ static struct LCM_setting_table lcm_suspend_setting[] = {
 	{ 0xB9, 0x03, {0x83, 0x10, 0x2E} },
 	{ 0xB1, 0x01, {0x21} },
 };
-#endif
 
 static void init_lcm_register(void)
 {
@@ -363,19 +362,19 @@ static void lcm_init(void)
 
 	LCM_LOGD("lcm_init\n");
 
-	// OCP2131_GPIO_ENP_enable();
-	// ret = OCP2131_write_bytes(cmd, data);
+	OCP2131_GPIO_ENP_enable();
+	ret = OCP2131_write_bytes(cmd, data);
 	if (ret < 0)
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write error----\n", cmd);
 	else
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write success----\n", cmd);
 
 	MDELAY(2);
-	// OCP2131_GPIO_ENN_enable();
+	OCP2131_GPIO_ENN_enable();
 	cmd = 0x01;
 	data = 0x11;
 
-	// ret = OCP2131_write_bytes(cmd, data);
+	ret = OCP2131_write_bytes(cmd, data);
 
 	if (ret < 0)
 		LCM_LOGI("hx83102e----ocp2131----cmd=%0x--i2c write error----\n", cmd);
