@@ -24,12 +24,12 @@ void OCP2131_GPIO_ENN_enable(void)
 
 void OCP2131_GPIO_ENP_disable(void)
 {
-    mt_set_gpio_out(GPIO_LCD_BIAS_ENP_PIN, 1);
+    mt_set_gpio_out(GPIO_LCD_BIAS_ENP_PIN, 0);
 }
 
 void OCP2131_GPIO_ENN_disable(void)
 {
-    mt_set_gpio_out(GPIO_LCD_BIAS_ENN_PIN, 1);
+    mt_set_gpio_out(GPIO_LCD_BIAS_ENN_PIN, 0);
 }
 
 static struct mt_i2c_t OCP2131_i2c;
