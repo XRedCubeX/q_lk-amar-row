@@ -210,7 +210,6 @@ static void init_lcm_register(void)
 }
 #endif
 
-#if 0
 static struct LCM_setting_table init_setting_vdo[] = {
 	{ 0xB9, 0x03, {0x83, 0x10, 0x2E} },
 	{ 0x11, 0, {} },
@@ -221,7 +220,6 @@ static struct LCM_setting_table init_setting_vdo[] = {
 	{ 0x29, 0, {} },
 	{ REGFLAG_DELAY, 30, {} },
 };
-#endif
 
 static struct LCM_setting_table bl_level[] = {
 	{ 0x51, 0x02, {0x0F, 0xFF} },
@@ -399,7 +397,7 @@ static void lcm_init(void)
 	MDELAY(150);
 
 	init_lcm_register();
-	//push_table(NULL, init_setting_vdo, sizeof(init_setting_vdo) / sizeof(struct LCM_setting_table), 1);
+	push_table(NULL, init_setting_vdo, sizeof(init_setting_vdo) / sizeof(struct LCM_setting_table), 1);
 	LCM_LOGI("hx83102e----BOE----lcm mode = vdo mode ----\n");
 
 	//BACKLIGHT_GPIO_enable();
