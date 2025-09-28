@@ -408,14 +408,8 @@ static void lcm_init(void)
  	suspend_lcm_register();
  	push_table(NULL, lcm_suspend_setting, sizeof(lcm_suspend_setting) / sizeof(struct LCM_setting_table), 1);
  	MDELAY(2);
- 	BACKLIGHT_GPIO_disable();
+ 	//BACKLIGHT_GPIO_disable();
 
- 	if (!Himax_gesture_status())
- 	{
- 		OCP2131_GPIO_ENN_disable();
- 		MDELAY(2);
- 		OCP2131_GPIO_ENP_disable();
- 	}
  }
 
 static void lcm_resume(void)
@@ -577,6 +571,7 @@ LCM_DRIVER panel_mipi_hx83102e_boe_video_800p_lcm_drv = {
 	.set_util_funcs = lcm_set_util_funcs,
 	.get_params = lcm_get_params,
 	.init = lcm_init,
+	.suspend = lcm_suspend,
 	.resume = lcm_resume,
 	.compare_id = lcm_compare_id,
 	.init_power = lcm_init_power,

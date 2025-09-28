@@ -22,6 +22,16 @@ void OCP2131_GPIO_ENN_enable(void)
     mt_set_gpio_out(GPIO_LCD_BIAS_ENN_PIN, 1);
 }
 
+void OCP2131_GPIO_ENP_disable(void)
+{
+    mt_set_gpio_out(GPIO_LCD_BIAS_ENP_PIN, 1);
+}
+
+void OCP2131_GPIO_ENN_disable(void)
+{
+    mt_set_gpio_out(GPIO_LCD_BIAS_ENN_PIN, 1);
+}
+
 static struct mt_i2c_t OCP2131_i2c;
 
 int OCP2131_write_bytes(kal_uint8 addr, kal_uint8 value)
