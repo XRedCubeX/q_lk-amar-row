@@ -42,7 +42,7 @@ int OCP2131_write_bytes(kal_uint8 addr, kal_uint8 value)
     write_data[0]= addr;
     write_data[1] = value;
     OCP2131_i2c.id = I2C_I2C_LCD_BIAS_CHANNEL;
-    OCP2131_i2c.addr = (OCP2131_SLAVE_ADDR_WRITE >> 1);
+    OCP2131_i2c.addr = OCP2131_SLAVE_ADDR_WRITE;
     OCP2131_i2c.mode = ST_MODE;
     OCP2131_i2c.speed = 100;
     len = 2;
